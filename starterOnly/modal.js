@@ -35,43 +35,86 @@ const nom = document.getElementById("last");
 const email = document.getElementById("email")
 const dateNaiss = document.getElementById("birthdate");
 const quantité = document.getElementById("quantity");
-
+//const location = document.getElementById("ville");
+const locationTours = document.getElementsByName("location");
+const condition = document.getElementById("checkbox1");
+const Message = document.getElementById("checkbox");
+const validForm = document.querySelector(".validForm");
+const validMessage = document.getElementById("confirmMessage");
 const btnSubmit = document.getElementById("btnSubmit");
+const btnValider = document.getElementById("btnFermer");
+
+let locationName = 'vide'
+
+function validate() {
+    if (validFirstName(prenom) &&
+        validLastName(nom) &&
+        validEmail(email) &&
+        validBirthDate(dateNaiss) &&
+        validQuantity(quantité) &&
+        validLocation() &&
+        valideCondition(condition)
+
+    ) {
+        let contact = {
+            firstName: prenom.value,
+            lastName: nom.value,
+            email: email.value,
+            birthdate: dateNaiss.value,
+            quantity: quantité.value,
+            location: locationName,
+            checkbox: condition.value
+        };
+        console.log("contact:", contact);
+        pageRemerciment()
+
+    } else {
+        console.log("le formulaire n'est pas valide");
+    }
+}
 
 
 
 
 
-form.addEventListener('submit', (e) => {
-        //console.log("formulaire envoi en cours");
-        e.preventDefault();
-
-        //if (validFirstName(form.first));
-        if (validFirstName(prenom) &&
-            validLastName(nom) &&
-            validEmail(email) &&
-            validBirthDate(dateNaiss) &&
-            validQuantity(quantité)
-        ) {
-            let contact = {
-                firstName: prenom.value,
-                lastName: nom.value,
-                email: email.value,
-                birthdate: dateNaiss.value,
-                quantity: quantité.value
 
 
+// form.addEventListener('submit', (e) => {
+//         //console.log("formulaire envoi en cours");
+//         e.preventDefault();
 
-            };
-            console.log("contact:", contact);
+//         //if (validFirstName(form.first));
+//         if (validFirstName(prenom) &&
+//             validLastName(nom) &&
+//             validEmail(email) &&
+//             validBirthDate(dateNaiss) &&
+//             validQuantity(quantité) &&
+//             validLocation() &&
+//             valideCondition(condition)
 
-        } else {
-            console.log("le formulaire n'est pas valide");
-        }
+//         ) {
+//             let contact = {
+//                 firstName: prenom.value,
+//                 lastName: nom.value,
+//                 email: email.value,
+//                 birthdate: dateNaiss.value,
+//                 quantity: quantité.value,
+//                 location: locationTours.value,
+//                 checkbox: condition.value
 
 
-    }) /****************le prénom ********************************/
-    //L' changeévénement est déclenché pour <input>les éléments
+
+//             };
+//             console.log("contact:", contact);
+
+//         } else {
+//             console.log("le formulaire n'est pas valide");
+//         }
+
+
+//     })
+/****************le prénom ********************************/
+//L' changeévénement est déclenché pour <input>les éléments
 prenom.addEventListener('change', function() {
     validFirstName(this)
 
@@ -156,7 +199,7 @@ dateNaiss.addEventListener('change', function() {
 const validBirthDate = function(inputBirthDate) {
     let span = inputBirthDate.nextElementSibling;
     if (!birthdate) {
-        span.innerHTML = "Veuillez entrer une date de naissance valide";
+        span.innerHTML = "Vous devez entrer votre date de naissance.";
         span.classList.remove('text-succes');
         span.classList.add('text-danger');
 
@@ -196,3 +239,118 @@ const validQuantity = function(inputQuantity) {
         return true;
     }
 }
+
+/*********************la location************************************* */
+
+// function verifeyLocation() {
+//     for (let i = 0; i < locationTours.length; i++) {
+//         locationTours[i].addEventListener('click', function() {
+//             //desactive tous les choix
+//             for (let j = 0; j < locationTours.length; j++) {
+//                 locationTours[j].checked = false;
+//             }
+//             //activele choix séléctionné
+//             this.checked = true
+//         })
+//     }
+// }
+
+// function validLocation() {
+
+//     const locationText = document.getElementById("locationText");
+//     if (!verifeyLocationCheck()) {
+//         locationText.innerHTML = 'merci de choisir une ville';
+//         locationText.classList.remove('text-succes');
+//         locationText.classList.add('text-danger');
+//         return (false);
+
+//     } else {
+//         locationText.innerHTML = "champs validé";
+//         locationText.classList.remove('text-danger');
+//         locationText.classList.add('text-succes');
+//         return (true);
+//     }
+// }
+
+// function verifeyLocationCheck() {
+//     for (let i = 0; i < locationTours.length; i++) {
+//         if (locationTours[j].checked == true)
+//             return true
+//     }
+//     return false;
+// }
+
+
+
+function verifLocationTourname() {
+    locTournamentChec = false;
+    for (let i = 0; i < locationTours.length; i++) {
+        const isCheck = locationTours[i].checked;
+        if (isCheck) {
+            locTournamentChec = true;
+            locationName = locationTours[i].value;
+            return true
+        }
+    }
+    return false
+}
+
+locationTours.forEach((checkedBoxInput) => checkedBoxInput.addEventListener('change', function() {
+    validLocation(this);
+}));
+
+function validLocation() {
+    let locTournamentChec
+
+    if (!verifLocationTourname(locTournamentChec)) {
+
+        locationText.innerHTML = "Merci de cocher une ville";
+        locationText.classList.remove('text-succes');
+        locationText.classList.add('text-danger');
+        return false;
+    } else {
+        locationText.innerHTML = "Champs valide";
+        locationText.classList.remove('text-danger');
+        locationText.classList.add('text-succes');
+        return true;
+    }
+}
+
+/***********************les condition*****************************/
+condition.addEventListener('change', function() {
+    valideCondition(this)
+})
+
+//vérifiersi la condition est coché ou pas
+
+const valideCondition = function() {
+    if (condition.checked === false) {
+
+        Message.innerHTML = "Merci d'accepter les conditions d'utilisations";
+        Message.classList.remove('text-succes');
+        Message.classList.add('text-danger');
+        return false;
+
+    } else {
+        Message.innerHTML = "Champs Valide";
+        Message.classList.remove('text-danger');
+        Message.classList.add('text-succes');
+        return true
+    }
+};
+
+/*******************bouton validation******************************** */
+function pageRemerciment() {
+    form.style.display = 'none';
+    validForm.style.display = "flex";
+    validMessage.innerHTML = "Merci pour votre réservation";
+
+
+};
+btnValider.addEventListener('click', function() {
+    window.location.reload();
+})
+
+
+
+/************bouton submit************************* */
